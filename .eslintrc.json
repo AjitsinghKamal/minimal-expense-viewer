@@ -4,8 +4,7 @@
 		"es2021": true
 	},
 	"ignorePatterns": [
-		"db/*",
-		"prisma/*"
+		"prisma/**/*"
 	],
 	"extends": [
 		"plugin:react/recommended",
