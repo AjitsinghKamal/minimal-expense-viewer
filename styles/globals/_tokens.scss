@@ -1,0 +1,6 @@
+@use "palette";
+
+:root {
+	@include palette.colors();
+	--rd: 10px;
+}
