@@ -1,14 +1,24 @@
 import ExpenseViewerAmount from "./ExpenseViewerAmout";
 import ExpenseViewerGraph from "./ExpenseViewerGraph";
+import ExpenseViewerLegends from "./ExpenseViewerLegends";
+
 import css from "./ExpenseViewer.module.scss";
 
-function ExpenseViewer() {
+export type Props = {
+	tags: Tag[];
+};
+function ExpenseViewer({ tags }: Props) {
 	return (
 		<div className={css.viewer}>
-			<ExpenseViewerAmount label="Total Spent" amount="12000" />
-			<div>
-				<ExpenseViewerGraph />
+			<div className={css.viewer_header}>
+				<ExpenseViewerAmount
+					label="Total Spent"
+					amount="12000"
+					currency="$"
+				/>
+				<ExpenseViewerLegends list={tags} />
 			</div>
+			<ExpenseViewerGraph />
 		</div>
 	);
 }

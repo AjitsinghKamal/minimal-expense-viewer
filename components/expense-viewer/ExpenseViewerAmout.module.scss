@@ -4,10 +4,17 @@
 		font-weight: 600;
 		font-size: 1.2rem;
 	}
+
 	&_value {
-		display: block;
-		font-size: 2rem;
-		font-weight: 800;
-		font-variant: tabular-nums;
+		&_currency {
+			font-size: 1.4rem;
+			opacity: 0.5;
+			padding-right: 6px;
+		}
+		&_spent {
+			font-size: 2rem;
+			font-weight: 800;
+			font-variant: tabular-nums;
+		}
 	}
 }

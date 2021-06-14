@@ -11,25 +11,36 @@ generator client {
 }
 
 model Transactions {
-    id            Int      @id @default(autoincrement())
-    createdAt     DateTime @default(now())
-    doneAt        DateTime
-    details       String
-    tag           Tags     @relation(fields: [tagId], references: [id])
-    tagId         Int
-    amountInCents Float    @default(0)
-    team          Teams    @relation(fields: [teamId], references: [id])
-    teamId        Int
+    id             Int          @id @default(autoincrement())
+    createdAt      DateTime     @default(now())
+    doneAt         DateTime
+    details        String
+    tag            Tags         @relation(fields: [tagId], references: [id])
+    tagId          Int
+    amountInCents  Float        @default(0)
+    team           Teams        @relation(fields: [teamId], references: [id])
+    teamId         Int
+    currency       String
+    organisation   Organisation @relation(fields: [organisationId], references: [id])
+    organisationId Int
+}
+
+model Organisation {
+    id           Int            @id @default(autoincrement())
+    name         String
+    Transactions Transactions[]
 }
 
 model Tags {
     id           Int            @id @default(autoincrement())
     title        String
     Transactions Transactions[]
+    legend       String
 }
 
 model Teams {
     id           Int            @id @default(autoincrement())
     title        String
     Transactions Transactions[]
+    legend       String
 }

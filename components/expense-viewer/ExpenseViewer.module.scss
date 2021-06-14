@@ -5,4 +5,9 @@
 	border-radius: var(--rd);
 	background: var(--white100);
 	box-shadow: rgba(0, 0, 0, 0.1) -4px 9px 25px -6px;
+	&_header {
+		display: flex;
+		align-items: flex-end;
+		justify-content: space-between;
+	}
 }
