@@ -9,6 +9,7 @@ import { DefaultLayout } from "../layouts";
 
 type Props = {
 	tags: Tag[];
+	transactions: Transaction[];
 };
 function Home(props: Props) {
 	return (
@@ -22,12 +23,19 @@ function Home(props: Props) {
 
 export const getStaticProps: GetStaticProps = async () => {
 	try {
-		console.log(`${process.env.APP_PATH}/api/tags`);
-		const data = await fetch(`${process.env.APP_PATH}/api/tags`, {
-			headers: { "Content-Type": "application/json" },
-		});
-		const json = await data.json();
-		return { props: { tags: json } };
+		const [tagsRes, dataRes] = await Promise.all([
+			fetch(`${process.env.APP_PATH}/api/tags`, {
+				headers: { "Content-Type": "application/json" },
+			}),
+			fetch(`${process.env.APP_PATH}/api/transactions`, {
+				headers: { "Content-Type": "application/json" },
+			}),
+		]);
+		const tags = await tagsRes.json();
+		const transactions = await dataRes.json();
+
+		console.log(transactions);
+		return { props: { tags, transactions } };
 	} catch (e) {
 		console.error(e);
 		return { props: { tags: [] } };

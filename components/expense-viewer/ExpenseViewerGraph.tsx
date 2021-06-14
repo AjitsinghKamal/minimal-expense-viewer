@@ -1,24 +1,37 @@
+import { useMemo } from "react";
 import ReactFrappeChart from "react-frappe-charts";
 
-function ExpenseViewerGraph() {
+type Props = {
+	labels: string[];
+	datasets: Record<string, number[]>;
+};
+function ExpenseViewerGraph({ datasets, labels }: Props) {
+	const memoisedDataSet = useMemo(
+		() =>
+			Object.entries(datasets).map(([name, values]) => ({
+				name,
+				values,
+			})),
+		[datasets]
+	);
 	return (
 		<ReactFrappeChart
-			type="bar"
+			type="line"
 			colors={["#21ba45"]}
-			axisOptions={{ xAxisMode: "tick", yAxisMode: "tick", xIsSeries: 1 }}
+			axisOptions={{
+				xIsSeries: 0,
+				yAxisMode: "tick",
+				xAxisMode: "tick",
+			}}
+			lineOptions={{
+				hideDots: 1,
+				heatline: 1,
+				regionFill: 1,
+			}}
 			height={250}
 			data={{
-				labels: [
-					"Sun",
-					"Mon",
-					"Tue",
-					"Wed",
-					"Thu",
-					"Fri",
-					"Sat",
-					"Sun",
-				],
-				datasets: [{ values: [18, 40, 30, 35, 8, 52, 17, 4] }],
+				labels: labels,
+				datasets: memoisedDataSet,
 			}}
 		/>
 	);

@@ -1,8 +1,12 @@
 import { Tag } from "components";
+import { Dispatch } from "react";
+import { Action } from "./ExpenseReducer";
+
 import css from "./ExpenseViewerLegends.module.scss";
 
 type Props = {
 	list: Tag[];
+	dispatch: Dispatch<Action>;
 };
 
 function ExpenseViewerLegends({ list }: Props) {
