@@ -5,6 +5,7 @@ import ExpenseReducer, { initialState } from "./ExpenseReducer";
 
 import css from "./ExpenseViewer.module.scss";
 import { useMemo, useReducer } from "react";
+import dayjs from "dayjs";
 
 export type Props = {
 	tags: Tag[];
@@ -52,7 +53,9 @@ function ExpenseViewer({ tags, transactions, teams }: Props) {
 				if ((hasFilters && matchFilter) || !hasFilters) {
 					const slug = getCategoryName(state.category);
 					acc.total += Number(transaction.amountInCents);
-					acc.labels.push(transaction.doneAt);
+					acc.labels.push(
+						dayjs(transaction.doneAt).format("DD-MM-YY")
+					);
 
 					if (acc.filteredDataSets[slug]) {
 						acc.filteredDataSets[slug].push(
