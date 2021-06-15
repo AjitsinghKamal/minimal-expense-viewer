@@ -7,18 +7,23 @@
 }
 .actions {
 	display: flex;
-	font-size: 14px;
+	font-size: 0.875rem;
 	margin: 6px 6px 24px;
+	font-weight: 500;
+
 	&_team {
 		background: var(--white400);
+		color: var(--dark200);
 		&:first-child {
 			border-radius: var(--rd-s) 0 0 var(--rd-s);
+			border-right: 1px solid var(--blue100);
 		}
 		&:last-child {
 			border-radius: 0 var(--rd-s) var(--rd-s) 0;
 		}
 		&.actions___active {
 			background: var(--c-team);
+			color: var(--green600);
 		}
 	}
 }

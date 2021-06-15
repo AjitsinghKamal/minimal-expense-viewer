@@ -21,7 +21,7 @@
 	},
 	"include": [
 		"next-env.d.ts",
-		"transaction.d.ts",
+		"types/*",
 		"**/*.ts",
 		"**/*.tsx"
 	],

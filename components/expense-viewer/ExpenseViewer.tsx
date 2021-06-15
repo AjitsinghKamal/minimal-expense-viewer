@@ -4,6 +4,7 @@ import dayjs from "dayjs";
 import ExpenseViewerAmount from "./ExpenseViewerAmout";
 import ExpenseViewerGraph from "./ExpenseViewerGraph";
 import ExpenseViewerLegends from "./ExpenseViewerLegends";
+import ExpenseViewerDatePicker from "./ExpenseViewerDate";
 import ExpenseReducer, { initialState } from "./ExpenseReducer";
 
 import css from "./ExpenseViewer.module.scss";
@@ -82,6 +83,7 @@ function ExpenseViewer({ tags, transactions, teams }: Props) {
 
 	return (
 		<div className={css.viewer}>
+			<ExpenseViewerDatePicker />
 			<div className={css.viewer_header}>
 				<ExpenseViewerAmount
 					label="Total Spent"

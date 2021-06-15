@@ -1,0 +1,13 @@
+.wrap {
+	margin-bottom: 12px;
+	.picker {
+		display: flex;
+		align-items: center;
+		opacity: 0.7;
+	}
+	.label {
+		margin-left: 6px;
+		font-size: 1rem;
+		color: var(--dark200);
+	}
+}
