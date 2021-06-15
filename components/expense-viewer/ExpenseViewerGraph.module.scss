@@ -1,0 +1,10 @@
+.tooltip {
+	background: var(--dark200);
+	border-radius: var(--rd-s);
+	color: var(--white400);
+	font-size: 0.875rem;
+	padding: 12px;
+	&_value {
+		font-weight: 600;
+	}
+}

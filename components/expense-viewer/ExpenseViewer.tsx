@@ -62,7 +62,7 @@ function ExpenseViewer({ tags, transactions, teams }: Props) {
 
 				total += Number(transaction.amountInCents);
 				filteredDataSets.push({
-					on: dayjs(transaction.doneAt).format("DD-MM-YY"),
+					on: dayjs(transaction.doneAt).format("MMM D, YYYY"),
 					[slug]: transaction.amountInCents,
 				});
 
@@ -97,10 +97,12 @@ function ExpenseViewer({ tags, transactions, teams }: Props) {
 					activeFilter={state.filterBy}
 				/>
 			</div>
-			<ExpenseViewerGraph
-				datasets={memo.filteredDataSets}
-				datakeys={memo.dataKeys}
-			/>
+			<div className={css.viewer_chart}>
+				<ExpenseViewerGraph
+					datasets={memo.filteredDataSets}
+					datakeys={memo.dataKeys}
+				/>
+			</div>
 		</div>
 	);
 }
