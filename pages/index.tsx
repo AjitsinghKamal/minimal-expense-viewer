@@ -17,6 +17,7 @@ function Home(props: ExpenseViewerProps) {
 
 export const getStaticProps: GetStaticProps = async () => {
 	try {
+		console.log(`${process.env.APP_PROTOCOL}://${process.env.VERCEL_URL}`);
 		const [tagsRes, teamRes, dataRes] = await Promise.all([
 			fetchTags(),
 			fetchTeams(),
