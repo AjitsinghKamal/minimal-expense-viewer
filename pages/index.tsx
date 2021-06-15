@@ -1,4 +1,4 @@
-import { GetStaticProps } from "next";
+import { GetServerSideProps } from "next";
 
 import { ExpenseViewer } from "components";
 import type { ExpenseViewerProps } from "components";
@@ -15,14 +15,14 @@ function Home(props: ExpenseViewerProps) {
 	);
 }
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getServerSideProps: GetServerSideProps = async () => {
 	try {
-		console.log(`${process.env.APP_PROTOCOL}://${process.env.VERCEL_URL}`);
 		const [tagsRes, teamRes, dataRes] = await Promise.all([
 			fetchTags(),
 			fetchTeams(),
 			fetchTransactions(),
 		]);
+
 		const tags = await tagsRes.json();
 		const teams = await teamRes.json();
 		const transactions = await dataRes.json();
