@@ -1,17 +1,11 @@
-import {
-	GetServerSideProps,
-	GetServerSidePropsContext,
-	GetStaticProps,
-	NextApiRequest,
-} from "next";
-import { ExpenseViewer } from "../components";
-import { DefaultLayout } from "../layouts";
+import { GetStaticProps } from "next";
 
-type Props = {
-	tags: Tag[];
-	transactions: Transaction[];
-};
-function Home(props: Props) {
+import { ExpenseViewer } from "components";
+import type { ExpenseViewerProps } from "components";
+import { DefaultLayout } from "layouts";
+import { fetchTags, fetchTeams, fetchTransactions } from "http/expense";
+
+function Home(props: ExpenseViewerProps) {
 	return (
 		<DefaultLayout>
 			<section>
@@ -23,20 +17,18 @@ function Home(props: Props) {
 
 export const getStaticProps: GetStaticProps = async () => {
 	try {
-		const [tagsRes, dataRes] = await Promise.all([
-			fetch(`${process.env.APP_PATH}/api/tags`, {
-				headers: { "Content-Type": "application/json" },
-			}),
-			fetch(`${process.env.APP_PATH}/api/transactions`, {
-				headers: { "Content-Type": "application/json" },
-			}),
+		const [tagsRes, teamRes, dataRes] = await Promise.all([
+			fetchTags(),
+			fetchTeams(),
+			fetchTransactions(),
 		]);
 		const tags = await tagsRes.json();
+		const teams = await teamRes.json();
 		const transactions = await dataRes.json();
-		return { props: { tags, transactions } };
+		return { props: { tags, transactions, teams } };
 	} catch (e) {
 		console.error(e);
-		return { props: { tags: [] } };
+		return { props: { tags: [], transactions: [], teams: [] } };
 	}
 };
 

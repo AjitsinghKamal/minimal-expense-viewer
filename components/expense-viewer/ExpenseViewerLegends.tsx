@@ -6,7 +6,7 @@ import { Action } from "./ExpenseReducer";
 import css from "./ExpenseViewerLegends.module.scss";
 
 type Props = {
-	list: Tag[];
+	list: (Tag | Teams)[];
 	activeCategory?: "tag" | "team";
 	activeFilter?: Record<string, boolean>;
 	dispatch: Dispatch<Action>;
@@ -38,17 +38,17 @@ function ExpenseViewerLegends({
 			<div className={css.actions}>
 				<Button
 					className={cx(css.actions_team, {
-						[css.actions___active]: activeCategory === "team",
+						[css.actions___active]: activeCategory === "tag",
 					})}
-					onClick={() => handleCategoryChange("team")}
+					onClick={() => handleCategoryChange("tag")}
 				>
 					Expense by Type
 				</Button>
 				<Button
 					className={cx(css.actions_team, {
-						[css.actions___active]: activeCategory === "tag",
+						[css.actions___active]: activeCategory === "team",
 					})}
-					onClick={() => handleCategoryChange("tag")}
+					onClick={() => handleCategoryChange("team")}
 				>
 					Expense by Team
 				</Button>

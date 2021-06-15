@@ -1,11 +1,12 @@
+import { useMemo, useReducer } from "react";
+import dayjs from "dayjs";
+
 import ExpenseViewerAmount from "./ExpenseViewerAmout";
 import ExpenseViewerGraph from "./ExpenseViewerGraph";
 import ExpenseViewerLegends from "./ExpenseViewerLegends";
 import ExpenseReducer, { initialState } from "./ExpenseReducer";
 
 import css from "./ExpenseViewer.module.scss";
-import { useMemo, useReducer } from "react";
-import dayjs from "dayjs";
 
 export type Props = {
 	tags: Tag[];
@@ -30,18 +31,19 @@ function ExpenseViewer({ tags, transactions, teams }: Props) {
 	const [state, dispatch] = useReducer(ExpenseReducer, initialState);
 
 	/**
-	 * compute total spent and
+	 * Compute total spent and
 	 * generate datasets based on categories
 	 */
 	const memo = useMemo(() => {
 		const filteredDataSets: any[] = [];
 		let total: number = 0;
 		const dataKeys: Record<string, string> = {};
-		for (let transaction of transactions) {
+		for (const transaction of transactions) {
 			const hasFilters = state.category;
 			const matchFilter =
 				state.category &&
-				state.filterBy[transaction[state.category]?.id];
+				transaction[state.category] &&
+				state.filterBy[transaction[state.category].id];
 
 			// Only add a transaction to the dataset
 			// when either -
@@ -59,7 +61,7 @@ function ExpenseViewer({ tags, transactions, teams }: Props) {
 
 				total += Number(transaction.amountInCents);
 				filteredDataSets.push({
-					on: transaction.doneAt,
+					on: dayjs(transaction.doneAt).format("DD-MM-YY"),
 					[slug]: transaction.amountInCents,
 				});
 
@@ -70,6 +72,7 @@ function ExpenseViewer({ tags, transactions, teams }: Props) {
 				}
 			}
 		}
+
 		return {
 			total,
 			filteredDataSets,
@@ -86,7 +89,7 @@ function ExpenseViewer({ tags, transactions, teams }: Props) {
 					currency="$"
 				/>
 				<ExpenseViewerLegends
-					list={tags}
+					list={state.category === "tag" ? tags : teams}
 					dispatch={dispatch}
 					activeCategory={state.category}
 					activeFilter={state.filterBy}
