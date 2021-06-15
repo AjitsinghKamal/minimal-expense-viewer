@@ -33,8 +33,6 @@ export const getStaticProps: GetStaticProps = async () => {
 		]);
 		const tags = await tagsRes.json();
 		const transactions = await dataRes.json();
-
-		console.log(transactions);
 		return { props: { tags, transactions } };
 	} catch (e) {
 		console.error(e);

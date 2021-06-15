@@ -1,37 +1,44 @@
 export type State = {
-	category: "tagId" | "teamId" | null;
+	category?: "tag" | "team";
 	filterBy: Record<string, boolean>;
 };
 
 export type Action =
 	| {
-			type: "tag" | "team";
-			payload: string;
+			type: "filter";
+			payload: number;
 	  }
 	| {
 			type: "category";
 			payload: State["category"];
+			default: number;
 	  };
 
 export const initialState = {
-	category: null,
-	filterBy: {},
+	category: undefined,
+	filterBy: {}, // Keeping this map to support stacked charts later
 };
 function ExpenseReducer(state: State, action: Action): State {
 	switch (action.type) {
-		case "tag":
-		case "team": {
+		case "filter":
 			return {
 				...state,
 				filterBy: {
-					...state.filterBy,
 					[action.payload]: !state.filterBy[action.payload],
 				},
 			};
-		}
 
 		case "category":
-			return { ...state, category: action.payload };
+			return {
+				...state,
+				category:
+					state.category === action.payload
+						? undefined
+						: action.payload,
+				filterBy: {
+					[action.default]: true,
+				},
+			};
 		default:
 			return state;
 	}

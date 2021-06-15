@@ -15,8 +15,8 @@ type Transaction = {
 	id: number;
 	doneAt: string;
 	details?: string;
-	tagId: number;
+	tag: Tag;
 	amountInCents: string;
-	teamId: number;
+	team: Teams;
 	currency: string;
 };

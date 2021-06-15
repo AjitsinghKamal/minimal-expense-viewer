@@ -19,59 +19,63 @@ export type Props = {
  * @param categorySlug selected category identifier
  * @returns dataset label
  */
-function getCategoryName(categorySlug: string | null) {
-	if (categorySlug === "tagId") return "Tag";
-	if (categorySlug === "teamId") return "Team";
-	return "All";
-}
+const getCategoryName = (categorySlug?: string, subCat?: string) => {
+	if (subCat) return subCat;
+	if (categorySlug === "tag") return "Tag";
+	if (categorySlug === "team") return "Team";
+	return "amount";
+};
 
 function ExpenseViewer({ tags, transactions, teams }: Props) {
 	const [state, dispatch] = useReducer(ExpenseReducer, initialState);
 
-	// compute total spent and
-	// generate datasets based on categories
+	/**
+	 * compute total spent and
+	 * generate datasets based on categories
+	 */
 	const memo = useMemo(() => {
-		return transactions.reduce<{
-			filteredDataSets: Record<string, number[]>;
-			total: number;
-			labels: string[];
-		}>(
-			(acc, transaction) => {
-				const hasFilters = state.category;
-				const matchFilter =
-					state.category &&
-					state.filterBy[transaction[state.category]];
+		const filteredDataSets: any[] = [];
+		let total: number = 0;
+		const dataKeys: Record<string, string> = {};
+		for (let transaction of transactions) {
+			const hasFilters = state.category;
+			const matchFilter =
+				state.category &&
+				state.filterBy[transaction[state.category]?.id];
 
-				// Only add a transaction to the dataset
-				// when either -
-				//
-				// no category filter is set, in which case
-				// the dataset represents all transactions
-				// or
-				// a category is set, in which case we add
-				// the transaction matching the category
-				if ((hasFilters && matchFilter) || !hasFilters) {
-					const slug = getCategoryName(state.category);
-					acc.total += Number(transaction.amountInCents);
-					acc.labels.push(
-						dayjs(transaction.doneAt).format("DD-MM-YY")
-					);
+			// Only add a transaction to the dataset
+			// when either -
+			//
+			// no category filter is set, in which case
+			// the dataset represents all transactions
+			// or
+			// a category is set, in which case we add
+			// the transaction matching the category
+			if ((hasFilters && matchFilter) || !hasFilters) {
+				const slug = getCategoryName(
+					state.category,
+					state.category && transaction[state.category].title
+				);
 
-					if (acc.filteredDataSets[slug]) {
-						acc.filteredDataSets[slug].push(
-							+transaction.amountInCents
-						);
-					} else {
-						acc.filteredDataSets[slug] = [
-							+transaction.amountInCents,
-						];
-					}
+				total += Number(transaction.amountInCents);
+				filteredDataSets.push({
+					on: transaction.doneAt,
+					[slug]: transaction.amountInCents,
+				});
+
+				if (!dataKeys.slug) {
+					dataKeys[slug] = state.category
+						? transaction[state.category].legend
+						: `#8884d8`;
 				}
-				return acc;
-			},
-			{ filteredDataSets: {}, total: 0, labels: [] }
-		);
-	}, [transactions.length, JSON.stringify(state.filterBy)]);
+			}
+		}
+		return {
+			total,
+			filteredDataSets,
+			dataKeys: Object.entries(dataKeys),
+		};
+	}, [transactions.length, state.category, JSON.stringify(state.filterBy)]);
 
 	return (
 		<div className={css.viewer}>
@@ -81,11 +85,16 @@ function ExpenseViewer({ tags, transactions, teams }: Props) {
 					amount={memo.total}
 					currency="$"
 				/>
-				<ExpenseViewerLegends list={tags} dispatch={dispatch} />
+				<ExpenseViewerLegends
+					list={tags}
+					dispatch={dispatch}
+					activeCategory={state.category}
+					activeFilter={state.filterBy}
+				/>
 			</div>
 			<ExpenseViewerGraph
 				datasets={memo.filteredDataSets}
-				labels={memo.labels}
+				datakeys={memo.dataKeys}
 			/>
 		</div>
 	);

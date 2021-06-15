@@ -51,9 +51,11 @@ export default async function handle(
 			select: {
 				id: true,
 				doneAt: true,
-				tagId: true,
 				amountInCents: true,
+				tagId: true,
 				teamId: true,
+				tag: true,
+				team: true,
 			},
 		});
 		return res.json(transactions);

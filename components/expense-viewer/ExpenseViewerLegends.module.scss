@@ -1,8 +1,37 @@
+.wrap {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+	justify-content: flex-start;
+	align-self: stretch;
+}
+.actions {
+	display: flex;
+	font-size: 14px;
+	margin: 0 6px 24px;
+	&_team {
+		background: var(--white400);
+		&:first-child {
+			border-radius: var(--rd-s) 0 0 var(--rd-s);
+		}
+		&:last-child {
+			border-radius: 0 var(--rd-s) var(--rd-s) 0;
+		}
+		&.actions___active {
+			background: var(--c-team);
+		}
+	}
+}
 .legends {
 	display: flex;
 	align-items: center;
 	&_item {
 		margin: 0 6px;
 		cursor: pointer;
+		opacity: 0.5;
+		transition: opacity 0.3s;
+		&___active {
+			opacity: 1;
+		}
 	}
 }

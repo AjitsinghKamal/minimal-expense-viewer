@@ -1,39 +1,45 @@
-import { useMemo } from "react";
-import ReactFrappeChart from "react-frappe-charts";
+import { AreaChart, Area, CartesianGrid, YAxis } from "recharts";
 
 type Props = {
-	labels: string[];
-	datasets: Record<string, number[]>;
+	showSpecialisedColor: boolean;
+	legends: Tag[] | Teams[];
+	datasets: Transaction[];
+	datakeys: [string, string][];
 };
-function ExpenseViewerGraph({ datasets, labels }: Props) {
-	const memoisedDataSet = useMemo(
-		() =>
-			Object.entries(datasets).map(([name, values]) => ({
-				name,
-				values,
-			})),
-		[datasets]
-	);
+function ExpenseViewerGraph({ datasets, datakeys }: Props) {
 	return (
-		<ReactFrappeChart
-			type="line"
-			colors={["#21ba45"]}
-			axisOptions={{
-				xIsSeries: 0,
-				yAxisMode: "tick",
-				xAxisMode: "tick",
-			}}
-			lineOptions={{
-				hideDots: 1,
-				heatline: 1,
-				regionFill: 1,
-			}}
-			height={250}
-			data={{
-				labels: labels,
-				datasets: memoisedDataSet,
-			}}
-		/>
+		<div>
+			<AreaChart width={600} height={250} data={datasets}>
+				<defs>
+					{datakeys.map(([key, color]) => (
+						<linearGradient id={key} x1="0" y1="0" x2="0" y2="1">
+							<stop
+								offset="5%"
+								stopColor={color}
+								stopOpacity={0.8}
+							/>
+							<stop
+								offset="95%"
+								stopColor={color}
+								stopOpacity={0}
+							/>
+						</linearGradient>
+					))}
+				</defs>
+				{datakeys.map(([key, color]) => (
+					<Area
+						type="monotone"
+						dataKey={key}
+						stroke={color}
+						key={key}
+						fillOpacity={1}
+						fill={`url(#${key})`}
+					/>
+				))}
+				<CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
+				<YAxis tickLine={false} />
+			</AreaChart>
+		</div>
 	);
 }
 
