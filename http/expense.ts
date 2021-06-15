@@ -1,17 +1,18 @@
+const baseUrl = `${process.env.APP_PROTOCOL}://${process.env.VERCEL_URL}`;
 export const fetchTags = () => {
-	return fetch(`${process.env.VERCEL_URL}/api/tags`, {
+	return fetch(`${baseUrl}/api/tags`, {
 		headers: { "Content-Type": "application/json" },
 	});
 };
 
 export const fetchTeams = () => {
-	return fetch(`${process.env.VERCEL_URL}/api/teams`, {
+	return fetch(`${baseUrl}/api/teams`, {
 		headers: { "Content-Type": "application/json" },
 	});
 };
 
 export const fetchTransactions = () => {
-	return fetch(`${process.env.VERCEL_URL}/api/transactions`, {
+	return fetch(`${baseUrl}/api/transactions`, {
 		headers: { "Content-Type": "application/json" },
 	});
 };
